@@ -3,12 +3,17 @@
 This example features a sample e-commerce store that uses [Stripe Elements](https://stripe.com/docs/elements), [PaymentIntents](https://stripe.com/docs/payments/payment-intents) for [dynamic authentication](https://stripe.com/docs/payments/3d-secure), and the [Sources API](https://stripe.com/docs/sources) to illustrate how to accept card payments on the web.
 
 ## Overview
+The frontend code for the app is in the `public/` directory.
+
+The core logic of the Stripe integration is mostly contained within two files:
+
+1.  [`public/javascripts/payments.js`](public/javascripts/payments.js) creates the payment experience on the frontend using Stripe Elements.
+2.  [`server/node/routes.js`](server/node/routes.js) defines the routes on the backend that create Stripe charges and receive webhook events.
 
 <img src="public/images/screenshots/demo-chrome.png" alt="Demo on Google Chrome" width="610"><img src="public/images/screenshots/demo-iphone.png" alt="Demo on Safari iPhone X" width="272">
 
-## Environment Setup
-### Requirements
 
+## Environment Setup
 You’ll need the following:
 
 - [Node.js](http://nodejs.org) >=10.0.0
@@ -22,6 +27,7 @@ After the installation has finished, authenticate the CLI with your Stripe accou
 Some payment methods require receiving a real-time webhook notification to complete a charge. We're using the [Stripe CLI](https://github.com/stripe/stripe-cli#listen) to forward webhook events to our local development server. Additionally this app is bundled with [ngrok](https://ngrok.com/), to serve the app locally via HTTPS, which is required for the Payment Request API.
 
 ## Project Setup
+Fork this repo and then clone locally
 Copy the environment variables file from the root of the repository:
 
     cp .env.example .env
@@ -43,16 +49,7 @@ The Stripe CLI will let you know that webhook forwarding is ready and output you
 Please copy the webhook signing secret (`whsec_xxx`) to your `.env` file.
 
 
-## Payments Integration
-
-The frontend code for the demo is in the `public/` directory.
-
-The core logic of the Stripe integration is mostly contained within two files:
-
-1.  [`public/javascripts/payments.js`](public/javascripts/payments.js) creates the payment experience on the frontend using Stripe Elements.
-2.  [`server/node/routes.js`](server/node/routes.js) defines the routes on the backend that create Stripe charges and receive webhook events.
-
-### Running the Node Server
+### Running the Node Server and accepting card payments
 
 In a separate terminal window, start the local server:
 
