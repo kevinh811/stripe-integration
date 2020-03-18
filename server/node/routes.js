@@ -16,6 +16,8 @@ const express = require('express');
 const router = express.Router();
 const stripe = require('stripe')(config.stripe.secretKey);
 stripe.setApiVersion(config.stripe.apiVersion);
+const log = require('simple-node-logger').createSimpleFileLogger('project.log');
+log.setLevel('trace');
 
 // Render the main app HTML.
 router.get('/', (req, res) => {
@@ -58,9 +60,12 @@ router.post('/payment_intents', async (req, res, next) => {
       currency,
       payment_method_types: config.paymentMethods,
     });
+    const log = require('simple-node-logger').createSimpleFileLogger('project.log');
     return res.status(200).json({paymentIntent});
   } catch (err) {
     return res.status(500).json({error: err.message});
+
+
   }
 });
 
