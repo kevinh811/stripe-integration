@@ -1,32 +1,24 @@
-# Stripe Payments Demo
+# Stripe Integration
 
-This demo features a sample e-commerce store that uses [Stripe Elements](https://stripe.com/docs/elements), [PaymentIntents](https://stripe.com/docs/payments/payment-intents) for [dynamic authentication](https://stripe.com/docs/payments/3d-secure), and the [Sources API](https://stripe.com/docs/sources) to illustrate how to accept both card payments and additional payment methods on the web.
-
-If you’re running a compatible browser, this demo also showcases the [Payment Request API](https://stripe.com/docs/payment-request-api), [Apple Pay](https://stripe.com/docs/apple-pay), [Google Pay](https://stripe.com/docs/google-pay), and [Microsoft Pay](https://stripe.com/docs/microsoft-pay) for a seamless payment experience.
-
-**You can see this demo app running in test mode on [stripe-payments-demo.appspot.com](https://stripe-payments-demo.appspot.com).**
-
-️⚠️ [️PaymentIntents](https://stripe.com/docs/payments/payment-intents) is the recommended integration path for 3D Secure authentication. It lets you benefit from [dynamic authentication](https://stripe.com/docs/payments/3d-secure) to maximize conversion and prepare for regulations like [Strong Customer Authentication](https://stripe.com/guides/strong-customer-authentication) in Europe.
+This example features a sample e-commerce store that uses [Stripe Elements](https://stripe.com/docs/elements), [PaymentIntents](https://stripe.com/docs/payments/payment-intents) for [dynamic authentication](https://stripe.com/docs/payments/3d-secure), and the [Sources API](https://stripe.com/docs/sources) to illustrate how to accept both card payments and additional payment methods on the web.
 
 ## Overview
 
 <img src="public/images/screenshots/demo-chrome.png" alt="Demo on Google Chrome" width="610"><img src="public/images/screenshots/demo-iphone.png" alt="Demo on Safari iPhone X" width="272">
 
-This demo provides an all-in-one example for integrating with Stripe on the web:
+## Environment Setup
+### Requirements
 
-<!-- prettier-ignore -->
-|     | Features
-:---: | :---
-✨ | **Beautiful UI components for card payments**. This demo uses pre-built Stripe components customized to fit the app design, including the [Card Element](https://stripe.com/docs/elements) which provides real-time validation, formatting, and autofill.
-💳 | **Card payments with Payment Request, Apple Pay, Google Pay, and Microsoft Pay.** The app offers frictionless card payment experiences with a single integration using the [Payment Request Button Element](https://stripe.com/docs/elements/payment-request-button).
-🌍 | **Payment methods for Europe and Asia.** A dozen redirect-based payment methods are supported through the [Sources API](https://stripe.com/docs/sources), from [iDEAL](https://stripe.com/docs/sources/ideal) to [WeChat Pay](https://stripe.com/docs/sources/wechat-pay).
-🎩 | **Automatic payment methods suggestion.** Picking a country will automatically show relevant payment methods. For example, selecting  “Germany” will suggest SOFORT, Giropay, and SEPA Debit.
-🔐 | **Dynamic 3D Secure for Visa and Mastercard.** The app automatically handles the correct flow to complete card payments with [3D Secure](https://stripe.com/docs/payments/dynamic-3ds), whether it’s required by the card or encoded in one of your [3D Secure Radar rules](https://dashboard.stripe.com/radar/rules).
-📲 | **QR code generation for WeChat Pay.** During the payment process for [WeChat Pay](https://stripe.com/payments/payment-methods-guide#wechat-pay), a QR code is generated for the WeChat Pay URL to authorize the payment in the WeChat app.
-🚀 | **Built-in proxy for local HTTPS and webhooks.** Card payments require HTTPS and asynchronous payment methods with redirects rely on webhooks to complete transactions—[ngrok](https://ngrok.com/) is integrated so the app is served locally over HTTPS. The [Stripe CLI](https://github.com/stripe/stripe-cli#listen) is used to forward webhook events to the local server.
-🔧 | **Webhook signing**. We allow for [webhook signature verification](https://stripe.com/docs/webhooks/signatures), which is a recommended security practice.
-📱 | **Responsive design**. The checkout experience works on all screen sizes. Apple Pay works on Safari for iPhone and iPad if the Wallet is enabled, and Payment Request works on Chrome for Android.
-📦 | **No datastore required.** Products, and SKUs are stored using the [Stripe API](https://stripe.com/docs/api/products), which you can replace with your own database to keep track of products and inventory.
+You’ll need the following:
+
+- [Node.js](http://nodejs.org) >=10.0.0
+- Modern browser that supports ES6 (Chrome to see the Payment Request, and Safari to see Apple Pay).
+- Stripe account to accept payments ([sign up](https://dashboard.stripe.com/register) for free).
+
+Some payment methods require receiving a real-time webhook notification to complete a charge. We're using the [Stripe CLI](https://github.com/stripe/stripe-cli#listen) to forward webhook events to our local development server. Additionally this demo is bundled with [ngrok](https://ngrok.com/), to serve the app locally via HTTPS, which is required for the Payment Request API.
+
+## Project Setup
+
 
 ## Payments Integration
 
@@ -47,38 +39,16 @@ This demo uses both the [Card Element](https://stripe.com/docs/elements) and the
 
 ![Payment Request on Chrome](public/images/screenshots/demo-payment-request.png)
 
-### Beyond Cards: Payment Methods for Europe and Asia
-
-This demo also shows how to reach customers in Europe and Asia by supporting their preferred way to pay online. It supports payment methods such as [ACH credit transfers](https://stripe.com/payments/payment-methods-guide#ach-credit-transfers), [Alipay](https://stripe.com/payments/payment-methods-guide#alipay), [Bancontact](https://stripe.com/payments/payment-methods-guide#bancontact), [iDEAL](https://stripe.com/payments/payment-methods-guide#ideal), [Giropay](https://stripe.com/payments/payment-methods-guide#giropay), [SEPA Direct Debit](https://stripe.com/payments/payment-methods-guide#sepa), [SOFORT](https://stripe.com/payments/payment-methods-guide#sofort), and [WeChat Pay](https://stripe.com/payments/payment-methods-guide#wechat).
-
-The app also supports both [Multibanco](https://stripe.com/docs/sources/multibanco) and [EPS](https://stripe.com/docs/sources/eps) which are currently in Public Beta on Stripe.
-
-![WeChat Pay with the Sources API](public/images/screenshots/demo-wechat.png)
 
 ## Getting Started with Node
 
-Instructions for running the Node.js server in [`server/node`](/server/node) are below. You can find alternative server implementations in the [`server`](/server) directory:
+Instructions for running the Node.js server in [`server/node`](/server/node) are below.
 
-- Go, Echo: [`server/go`](/server/go)
-- Java, Spark: [`server/java`](/server/java)
 - Node, Express: [`server/node`](/server/node)
-- PHP, Slim: [`server/php`](/server/php)
-- Python, Flask: [`server/python`](/server/python)
-- Ruby, Sinatra: [`server/ruby`](/server/ruby)
 
 All servers have the same endpoints to handle requests from the frontend and interact with the [Stripe libraries](https://stripe.com/docs/libraries).
 
-### Requirements
 
-You’ll need the following:
-
-- [Node.js](http://nodejs.org) >=10.0.0
-- Modern browser that supports ES6 (Chrome to see the Payment Request, and Safari to see Apple Pay).
-- Stripe account to accept payments ([sign up](https://dashboard.stripe.com/register) for free).
-
-In your Stripe Dashboard, you can [enable the payment methods](https://dashboard.stripe.com/payments/settings) you’d like to test.
-
-Some payment methods require receiving a real-time webhook notification to complete a charge. We're using the [Stripe CLI](https://github.com/stripe/stripe-cli#listen) to forward webhook events to our local development server. Additionally this demo is bundled with [ngrok](https://ngrok.com/), to serve the app locally via HTTPS, which is required for the Payment Request API.
 
 ### Running the Node Server
 
@@ -101,10 +71,6 @@ After the installation has finished, authenticate the CLI with your Stripe accou
     stripe login --project-name=stripe-payments-demo
 
 To start the webhook forwarding run:
-
-    stripe listen --project-name=stripe-payments-demo --forward-to http://localhost:8000/webhook
-
-Alternatively, you can use the following shorthand command:
 
     npm run webhook
 
