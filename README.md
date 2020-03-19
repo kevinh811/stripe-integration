@@ -27,8 +27,9 @@ After the installation has finished, authenticate the CLI with your Stripe accou
 Some payment methods require receiving a real-time webhook notification to complete a charge. We're using the [Stripe CLI](https://github.com/stripe/stripe-cli#listen) to forward webhook events to our local development server. Additionally this app is bundled with [ngrok](https://ngrok.com/), to serve the app locally via HTTPS, which is required for the Payment Request API.
 
 ## Project Setup
-Fork this repo and then clone locally
-Copy the environment variables file from the root of the repository:
+-Fork this repo and then clone locally
+
+-Copy the environment variables file from the root of the repository:
 
     cp .env.example .env
 
